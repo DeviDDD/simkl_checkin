@@ -9,6 +9,10 @@ phone's real user agent, headers and device characteristics, and the app never
 tries to solve or skip a Cloudflare check. If a check needs a tap, the app
 sends a notification and waits for you.
 
+### Go to the latest release or download the APK directly.  
+[![Latest Release](https://img.shields.io/github/v/release/DeviDDD/simkl_checkin?style=for-the-badge)](https://github.com/DeviDDD/simkl_checkin/releases/latest)
+[![Download APK](https://img.shields.io/badge/Download-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/DeviDDD/simkl_checkin/releases/latest/download/simkl-checkin.apk)
+
 ## How it behaves
 
 - Simkl's day runs on UTC. Attempts happen at minute 05 and 35 of every UTC
@@ -19,7 +23,9 @@ sends a notification and waits for you.
 - When all accounts are done, the next attempt is 00:05 UTC the following day.
 - The screen wakes and shows the page over the lock screen for a few seconds
   per account. The phone does not need to be unlocked.
-- The log keeps the last 150 lines and is shown on the main screen.
+- Sends a notification for failed attempts.
+- You can turn logs on to keep a record of all the failed runs.
+- The log keeps the last 10 lines and is shown on the main screen.
 
 ## One-time setup
 
@@ -85,3 +91,7 @@ install it.
   of a major version jump. It is safe to leave or close.
 - GitHub pauses scheduled workflows after 60 days without repository activity
   and emails you a one-click link to resume them.
+
+## License
+
+AGPLv3. LICENSE contains the whole license.
