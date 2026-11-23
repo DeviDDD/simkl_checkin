@@ -15,7 +15,7 @@ import java.util.TimeZone
 /** Small persistent state: per-account progress, learned home pages and the log. */
 object Store {
     const val COUNT = 3
-    private const val LOG_LINES = 150
+    private const val LOG_LINES = 10
 
     private fun prefs(ctx: Context) = ctx.getSharedPreferences("simkl", Context.MODE_PRIVATE)
 
@@ -50,8 +50,16 @@ object Store {
         p.edit().putString("updateDay", today()).apply()
         return true
     }
-
+    
+    fun loggingOn(ctx: Context): Boolean = prefs(ctx).getBoolean("logging", false)
+    /** Turning the log off also deletes the log file. */
+    fun setLogging(ctx: Context, on: Boolean) {
+        prefs(ctx).edit().putBoolean("logging", on).apply()
+        if (!on) File(ctx.filesDir, "log.txt").delete()
+    }
+    
     fun log(ctx: Context, msg: String) {
+        if (!loggingOn(ctx)) return
         val f = File(ctx.filesDir, "log.txt")
         val stamp = SimpleDateFormat("dd MMM HH:mm", Locale.US).format(Date())
         val lines = (if (f.exists()) f.readLines() else emptyList()) + "$stamp  $msg"
@@ -81,6 +89,7 @@ object Store {
             .setContentText(msg)
             .setContentIntent(open)
             .setAutoCancel(true)
+            .setOnlyAlertOnce(true)
             .build()
         try {
             nm.notify(account, n)
