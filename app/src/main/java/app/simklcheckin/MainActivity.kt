@@ -69,7 +69,21 @@ class MainActivity : Activity() {
             Updater.check(app) { msg -> Toast.makeText(app, msg, Toast.LENGTH_LONG).show() }
         }
 
-        text("Version ${BuildConfig.VERSION_NAME}\n\nLog, newest first:\n${Store.readLog(this)}")
+        val logging = Store.loggingOn(this)
+        button(if (logging) "Debug log: ON (tap to turn off and erase)" else "Debug log: OFF (tap to turn on)") {
+            Store.setLogging(this, !logging)
+            render()
+        }
+        if (logging) {
+            button("Share log") {
+                val send = Intent(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, Store.readLog(this))
+                startActivity(Intent.createChooser(send, "Share log"))
+            }
+        }
+        val logText = if (logging) "\n\nLast 10 log lines, newest first:\n${Store.readLog(this)}" else ""
+        text("Version ${BuildConfig.VERSION_NAME}$logText")
     }
 
     /** The first permission still missing, with the action that opens its setting. */
