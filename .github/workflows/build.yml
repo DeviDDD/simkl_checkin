@@ -45,6 +45,14 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ github.token }}
 
+      # For getting pull request merging error information.
+      - name: Tell me when an update fails
+        if: failure() && github.event_name == 'pull_request'
+        run: gh pr comment "$PR_URL" --body "@${{ github.repository_owner }} this update failed to build, so was not merged. Open the CHecks tab to see the error."
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ github.token }}
+
       # Main branch: skip the weekly run when the latest commit is already released.
       - name: Decide whether to release
         id: gate
